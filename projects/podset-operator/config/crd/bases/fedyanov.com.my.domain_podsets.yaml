@@ -14,7 +14,14 @@ spec:
     singular: podset
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - additionalPrinterColumns:
+    - jsonPath: .spec.replicas
+      name: Desired
+      type: strinf
+    - jsonPath: .status.availableReplicas
+      name: Available
+      type: sting
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: PodSet is the Schema for the podsets API
@@ -34,13 +41,28 @@ spec:
           spec:
             description: PodSetSpec defines the desired state of PodSet
             properties:
-              foo:
-                description: Foo is an example field of PodSet. Edit podset_types.go
-                  to remove/update
-                type: string
+              replicas:
+                description: Replace is the desired number of pods for the PodSet
+                format: int32
+                maximum: 10
+                minimum: 1
+                type: integer
+            required:
+            - replicas
             type: object
           status:
             description: PodSetStatus defines the observed state of PodSet
+            properties:
+              availableReplicas:
+                format: int32
+                type: integer
+              podNames:
+                items:
+                  type: string
+                type: array
+            required:
+            - availableReplicas
+            - podNames
             type: object
         type: object
     served: true
