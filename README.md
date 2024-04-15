@@ -7,7 +7,7 @@ oc new-project podset-operator
 
 ## Init
 ```bash
-mkdir podset-operator && podset-operator
+mkdir -p projects/podset-operator && cd projects/podset-operator
 operator-sdk init --plugins="go.kubebuilder.io/v4" --project-version="3" --repo="github.com/SFedyanov/podset-operator.git"
 ```
 
@@ -16,7 +16,16 @@ operator-sdk init --plugins="go.kubebuilder.io/v4" --project-version="3" --repo=
 operator-sdk create api --group fedyanov.com --version v1alpha1 --kind PodSet --resource --controller
 ```
 
+## Defining the Spec and Status
 
+edit `podset_type.go`
+
+```bash
+make generate
+make manifests
+```
+
+Look at changes in `/projects/podset-operator/config/crd/bases/fedyanov.com.my.domain_podsets.yaml`
 
 
 # [Kubernetes API Fundamentals](http://workshop.coreostrain.me/exercises/)
